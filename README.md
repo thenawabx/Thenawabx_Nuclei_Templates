@@ -1,6 +1,6 @@
 # 🛡️ Thenawabx Nuclei Templates
 
-আধুনিক **WAF (Web Application Firewall)** বাইপাস এবং নির্ভুলভাবে সিকিউরিটি হোল শনাক্ত করার জন্য এই রিপোজিটরিতে ১১টি অ্যাডভান্সড কাস্টম নিউক্লিয়াই টেমপ্লেট রয়েছে।
+আধুনিক **WAF (Web Application Firewall)** বাইপাস এবং নির্ভুলভাবে সিকিউরিটি হোল শনাক্ত করার জন্য এই রিপোজিটরিতে অ্যাডভান্সড কাস্টম নিউক্লিয়াই টেমপ্লেট রয়েছে।
 
 ---
 
@@ -10,18 +10,17 @@
 ---
 
 ### 🚀 টেমপ্লেট লিস্ট (Included Templates)
-১. **SQLi** - WAF Bypass SQL Injection
-২. **XSS** - Precision Cross-Site Scripting
-৩. **LFI** - System File Discovery
-৪. **Open Redirect** - Filter Bypass
-৫. **SSRF** - Cloud Metadata & Internal Port Access
-৬. **CRLF** - Header Manipulation
-৭. **SSTI** - Server-Side Template Injection
-৮. **RCE** - Remote Code Execution (OS Command Injection)
-৯. **IDOR** - Private Data Leak Detection
-১০. **Sensitive Files** - Environment & Config File Leak
-১১. **Prototype Pollution** - JavaScript Logic Manipulation
-
+​১. SQLi (SQL Injection)
+২. XSS (Cross-Site Scripting)
+৩. LFI (Local File Inclusion)
+৪. SSRF (Server-Side Request Forgery)
+৫. RCE (Remote Code Execution)
+৬. SSTI (Server-Side Template Injection)
+৭. IDOR (Insecure Direct Object Reference)
+৮. Open Redirect
+৯. CRLF Injection
+১০. Sensitive File Leak
+১১. Prototype Pollution
 ---
 
 ### 📥 ইন্সটলেশন ও ব্যবহার (Installation & Usage)
