@@ -38,7 +38,7 @@ cd Thenawabx_Nuclei_Templates
 
 **৩. নিউক্লিয়াই দিয়ে স্ক্যান শুরু করুন:**
 ```bash
-nuclei -l targets.txt -t /path -rl 5 -c 3 -o scan_results.txt
+nuclei -l /path/targets.txt -t /Templates -rl 3 -c 1 -o Nuclei_vuln_results.txt
 ```
 
-#### Note : Use Only -rl 5 -c 3.
+#### Note : Use Only -rl 3 -c 1.
