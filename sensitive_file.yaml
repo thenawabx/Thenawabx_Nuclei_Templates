@@ -1,0 +1,56 @@
+id: advanced-sensitive-file-leak
+
+info:
+  name: Sensitive File & Information Disclosure Detector
+  author: thenawabx
+  severity: high
+  description: Scans for sensitive files like .env, .git, config backups, and database dumps.
+  tags: disclosure, sensitive-files, config, exposure
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/.env"
+      - "{{BaseURL}}/.git/config"
+      - "{{BaseURL}}/config.php.bak"
+      - "{{BaseURL}}/wp-config.php.save"
+      - "{{BaseURL}}/.htaccess"
+      - "{{BaseURL}}/.DS_Store"
+      - "{{BaseURL}}/phpinfo.php"
+      - "{{BaseURL}}/sql.zip"
+      - "{{BaseURL}}/backup.sql"
+
+    stop-at-first-match: false
+
+    matchers-condition: or
+    matchers:
+      # 1. Matches Environment files (DB_PASSWORD, AWS_KEY, etc.)
+      - type: word
+        part: body
+        words:
+          - "DB_PASSWORD"
+          - "APP_KEY"
+          - "AWS_SECRET_ACCESS_KEY"
+        condition: or
+
+      # 2. Matches Git configuration (Reveals source code repo)
+      - type: word
+        part: body
+        words:
+          - "[core]"
+          - "repositoryformatversion"
+        condition: and
+
+      # 3. Matches phpinfo() page (Reveals server config)
+      - type: word
+        part: body
+        words:
+          - "PHP Version"
+          - "System"
+          - "Configuration"
+        condition: and
+
+      # 4. Ensures the server returns 200 OK
+      - type: status
+        status:
+          - 200

