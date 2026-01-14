@@ -29,4 +29,16 @@
 
 **১. রিপোজিটরি ক্লোন করুন:**
 ```bash
-git clone [https://github.com/thenawabx/Thenawabx_Nuclei_Templates.git](https://github.com/thenawabx/Thenawabx_Nuclei_Templates.git)
+git clone https://github.com/thenawabx/Thenawabx_Nuclei_Templates.git
+```
+**২. ফোল্ডারে প্রবেশ করুন:**
+```bash
+cd Thenawabx_Nuclei_Templates
+```
+
+**৩. নিউক্লিয়াই দিয়ে স্ক্যান শুরু করুন:**
+```bash
+nuclei -l targets.txt -t /path -rl 5 -c 3 -o scan_results.txt
+```
+
+#### Note : Use Only -rl 5 -c 3.
