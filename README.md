@@ -42,3 +42,6 @@ nuclei -l /path/targets.txt -t /Templates -rl 3 -c 1 -o Nuclei_vuln_results.txt
 ```
 
 #### Note : Use Only -rl 3 -c 1.
+
+
+# ​"This repository contains 1500+ Nuclei templates for bug hunting. Some templates may contain dummy/fake tokens for demonstration purposes. These are NOT real secrets."
